@@ -1,7 +1,7 @@
 @echo off
 REM Ensure Python and required libraries are installed
 echo Installing required Python libraries...
-pip install opencv-python mediapipe numpy
+pip install opencv-python mediapipe numpy pygame
 
 REM Run the Bell's Palsy GUI application
 echo Starting the Bell's Palsy application...
