@@ -72,7 +72,7 @@ while cap.isOpened():
             right_distance = calculate_distance(right_eye, right_eyebrow)
 
             # Check the condition if the distance is greater than or equal to 0.05
-            if (left_distance >= 0.05 or right_distance >= 0.05) and counting_enabled:
+            if (left_distance >= 0.06 or right_distance >= 0.06) and counting_enabled:
                 # Set the start time if it hasn't started yet
                 if start_time is None:
                     start_time = time.time()
@@ -84,25 +84,24 @@ while cap.isOpened():
                     start_time = None  # Reset start time
 
             # Reset the status when the distance is below 0.05 on both sides
-            if left_distance < 0.05 and right_distance < 0.05:
+            if left_distance <= 0.06 and right_distance <= 0.06:
                 counting_enabled = True  # Enable counting when the distance is below 0.05
                 start_time = None  # Reset start time
-            elif left_distance > 0.04 and left_distance < 0.06  and right_distance > 0.04 and right_distance < 0.06:
+            if left_distance > 0.04 and left_distance < 0.06  and right_distance > 0.04 and right_distance < 0.06:
                 cv2.putText(frame, f"OK", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
 
             # Check if counter reaches 10
-            if counter == 5:
+            if counter == 3:
                 set_counter += 1  # Increase set counter
                 counter = 0  # Reset counter to 0
-
-            if set_counter == 1 and counter > 1:
-                set1()
-            elif set_counter == 2 and counter > 1:
-                set2()
-            elif set_counter == 3 and counter > 1:
-                set3()
-                time.sleep(3)
-                end = True
+                if set_counter == 1:
+                    set1()
+                elif set_counter == 2:
+                    set2()
+                elif set_counter == 3:
+                    set3()
+                    time.sleep(3)
+                    end = True
 
             # Convert landmark positions to fit the image coordinates
             h, w, _ = frame.shape
