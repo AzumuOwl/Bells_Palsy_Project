@@ -106,19 +106,19 @@ while cap.isOpened():
                 start_time = None
 
             # Check if counter reaches 10
-            if counter == 5:
+            if counter == 3:
                 set_count += 1
                 counter = 0
 
             # Play corresponding set sound
-            if set_count == 1 and counter == 0:
-                set1()
-            elif set_count == 2 and counter == 0:
-                set2()
-            elif set_count == 3 and counter == 0:
-                set3()
-                time.sleep(3)
-                end = True
+                if set_count == 1 and counter == 0:
+                    set1()
+                elif set_count == 2 and counter == 0:
+                    set2()
+                elif set_count == 3 and counter == 0:
+                    set3()
+                    time.sleep(3)
+                    end = True
 
             # Display the smoothed distances on the frame
             cv2.putText(frame, f"Distance (Left Eyebrow): {int(avg_left_eyebrow_distance)}", (50, 50),
