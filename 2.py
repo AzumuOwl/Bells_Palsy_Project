@@ -90,18 +90,17 @@ while cap.isOpened():
                     counter += 1
                     below_threshold = True
 
-                    if counter == 5:
+                    if counter == 3:
                         set_counter += 1
                         counter = 0
-
-                    if set_counter == 1 and counter == 0:
-                        set1()
-                    elif set_counter == 2 and counter == 0:
-                        set2()
-                    elif set_counter == 3 and counter == 0:
-                        set3()
-                        time.sleep(3)
-                        end = True
+                        if set_counter == 1 and counter == 0:
+                            set1()
+                        elif set_counter == 2 and counter == 0:
+                            set2()
+                        elif set_counter == 3 and counter == 0:
+                            set3()
+                            time.sleep(3)
+                            end = True
             else:
                 below_threshold = False
 
