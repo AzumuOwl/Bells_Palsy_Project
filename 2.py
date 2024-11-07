@@ -42,7 +42,7 @@ buffer_size = 10  # Buffer size for moving average calculation
 # Variables to count occurrences where distance <= 72 and to count sets
 counter = 0
 set_counter = 0
-threshold_distance = 90  # Distance threshold for checking
+threshold_distance = 135  # Distance threshold for checking
 below_threshold = False  # Status to check if the distance has gone below threshold before
 end = False
 
@@ -50,7 +50,7 @@ end = False
 cap = cv2.VideoCapture(0)
 n2()
 
-while cap.isOpened():
+while cap.isOpened() :
     success, image = cap.read()
     if not success:
         print("Unable to read image from the camera.")
@@ -81,7 +81,7 @@ while cap.isOpened():
 
             # Calculate the average distance
             avg_distance = sum(distance_buffer) / len(distance_buffer)
-            if avg_distance > 89 and avg_distance <91 :
+            if avg_distance > 135 and avg_distance <140 :
                 cv2.putText(image, f"OK", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
             
             # Check the average distance against the threshold
