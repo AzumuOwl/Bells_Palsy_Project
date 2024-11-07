@@ -55,12 +55,12 @@ while cap.isOpened():
 
     # Calculate the width of the mouth
     mouth_width = calculate_mouth_width(frame)
-    if mouth_width > 0.07 and mouth_width < 0.09:
+    if mouth_width > 0.13 and mouth_width < 0.15:
         cv2.putText(frame, f"OK", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
 
     # Check and update the counter
     if mouth_width is not None:
-        if mouth_width <= 0.08:
+        if mouth_width <= 0.12:
             if not is_below_threshold:  # If not already below the threshold
                 count += 1  # Increase the count
                 is_below_threshold = True  # Set the below-threshold flag
