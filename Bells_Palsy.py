@@ -3,6 +3,7 @@ import subprocess
 import os
 import signal
 import pygame  # Import pygame for sound
+import psutil  # Import psutil for better process management
 
 # Initialize pygame mixer for playing sound
 pygame.mixer.init()
@@ -32,8 +33,13 @@ def stop_script():
     """Terminate the running script."""
     global current_process
     if current_process:
-        os.kill(current_process.pid, signal.SIGTERM)
-        current_process = None
+        # Use psutil to terminate the process safely
+        try:
+            p = psutil.Process(current_process.pid)
+            p.terminate()
+            current_process = None
+        except psutil.NoSuchProcess:
+            current_process = None  # Process already terminated
 
 def close_program():
     """Stop any running script and close the program."""
