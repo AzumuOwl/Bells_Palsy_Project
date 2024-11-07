@@ -82,10 +82,11 @@ with mp_face_mesh.FaceMesh(max_num_faces=1, refine_landmarks=True, min_detection
 
                 # Detect blink when EAR is below the threshold
                 if avg_EAR < EAR_THRESHOLD:
+                    time.sleep(2)
                     blink_count += 1
                     cv2.putText(image, "Blink Detected", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 else :
-                    cv2.putText(frame, f"OK", (30, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
+                    cv2.putText(image, f"OK", (20, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
 
                     # Wait until EAR is back to normal before counting another blink
                     while avg_EAR < EAR_THRESHOLD:
