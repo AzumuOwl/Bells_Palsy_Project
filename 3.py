@@ -89,19 +89,19 @@ while cap.isOpened():
             avg_right_eyebrow_distance = np.mean(right_eyebrow_distances)
 
             # Check if average distances are less than or equal to 40 and not already close
-            if (avg_left_eyebrow_distance <= 48 or avg_right_eyebrow_distance <= 48) and not is_close:
+            if (avg_left_eyebrow_distance <= 80 or avg_right_eyebrow_distance <= 80) and not is_close:
                 start_time = time.time()
                 is_close = True
-            elif (avg_left_eyebrow_distance > 47 and avg_left_eyebrow_distance < 55 or avg_right_eyebrow_distance > 47 and avg_right_eyebrow_distance < 55):
+            elif (avg_left_eyebrow_distance > 79 and avg_left_eyebrow_distance < 90 or avg_right_eyebrow_distance > 79 and avg_right_eyebrow_distance <90):
                 cv2.putText(frame, f"OK", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
             # If is_close is True and 2 seconds have passed
-            if is_close and start_time and time.time() - start_time >= 2:
+            if is_close and start_time and time.time() - start_time >= 1:
                 counter += 1
                 start_time = None
                 is_close = False
 
             # Reset the state if the distance goes above 48
-            elif avg_left_eyebrow_distance > 48 and avg_right_eyebrow_distance > 48:
+            elif avg_left_eyebrow_distance > 80 and avg_right_eyebrow_distance > 80:
                 is_close = False
                 start_time = None
 
