@@ -20,4 +20,4 @@ if %errorlevel% neq 0 (
 endlocal
 
 echo Installing required Python libraries...
-pip install opencv-python mediapipe numpy pygame
+pip install opencv-python mediapipe numpy pygame psutil  
