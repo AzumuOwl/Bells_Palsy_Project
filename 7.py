@@ -39,7 +39,7 @@ distance_history = []
 max_history_length = 10  # Number of frames to average over
 count = 0  # Counter for occurrences
 set_count = 0  # Counter for sets
-threshold = 80  # Distance threshold
+threshold = 110  # Distance threshold
 above_threshold = False  # State flag for crossing the threshold
 max_count = 5  # Maximum count before increasing set
 
@@ -85,7 +85,7 @@ while cap.isOpened():
             smoothed_distance = np.mean(distance_history)
             cv2.putText(image, f'Distance: {int(smoothed_distance)} pixels', (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
-            if smoothed_distance > 75 and smoothed_distance <80 :
+            if smoothed_distance > 100 and smoothed_distance <110 :
                 cv2.putText(image, f"OK", (10, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
             # Check for threshold crossing
             if smoothed_distance > threshold and not above_threshold:
