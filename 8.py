@@ -2,6 +2,7 @@ import cv2
 import mediapipe as mp
 import pygame  # Import pygame
 import time
+
 # Set up MediaPipe Face Mesh
 mp_face_mesh = mp.solutions.face_mesh
 mp_drawing = mp.solutions.drawing_utils
@@ -23,6 +24,7 @@ def set3():
 def n8():
     pygame.mixer.music.load('S1/8.mp3')
     pygame.mixer.music.play()
+
 # Smile detection function
 def is_smiling(landmarks):
     # Face landmarks for lips
@@ -41,6 +43,7 @@ n8()
 smile_count = 0           # Smile counter
 set_count = 0             # Set counter (increments every 5 smiles)
 is_currently_smiling = False  # Current smile status
+smile_reset = True        # Ensure a reset before counting next smile
 
 with mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, min_detection_confidence=0.5) as face_mesh:
     while cap.isOpened():
@@ -54,17 +57,15 @@ with mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, min_detecti
 
         if results.multi_face_landmarks:
             for face_landmarks in results.multi_face_landmarks:
-                # Draw landmarks on the face
-                #mp_drawing.draw_landmarks(frame, face_landmarks, mp_face_mesh.FACEMESH_LIPS)
-
                 # Smile detection
                 smiling = is_smiling(face_landmarks.landmark)
 
                 # Check smile counting condition
-                if smiling and not is_currently_smiling:
+                if smiling and not is_currently_smiling and smile_reset:
                     # Count a smile when transitioning from not smiling to smiling
                     smile_count += 1
                     is_currently_smiling = True  # Update current smile status
+                    smile_reset = False          # Require reset before next count
                     
                     # Check if smile count reaches 5
                     if smile_count >= 5:
@@ -79,9 +80,10 @@ with mp_face_mesh.FaceMesh(static_image_mode=False, max_num_faces=1, min_detecti
                         time.sleep(3)
                         end = True
                 elif not smiling:
-                    # Reset smile status when not smiling
+                    # Reset smile status and allow next smile count
                     is_currently_smiling = False
-                    cv2.putText(frame, f"OK", (30, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
+                    smile_reset = True
+                    cv2.putText(frame, "OK", (30, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 4)
 
                 # Display text on screen
                 cv2.putText(frame, f"Smile Count: {smile_count}", (30, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
