@@ -31,7 +31,7 @@ cap = cv2.VideoCapture(0)
 n6()
 
 # Threshold for detecting nose flare
-nose_flare_threshold = 0.07  # Set threshold to 0.07
+nose_flare_threshold = 0.10  # Set threshold to 0.07
 num_frames_for_avg = 10  # Number of frames for calculating the average
 
 # Queue for storing nose width values per frame
@@ -75,7 +75,7 @@ while cap.isOpened():
             cv2.putText(frame, f'Sets: {set_count}', (10, 140), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
             # Check the nose width status against the threshold
-            if avg_nose_width > 0.0675 and avg_nose_width < 0.07:
+            if avg_nose_width > 0.0975 and avg_nose_width < 0.1:
                 cv2.putText(frame, f"OK", (10, 170), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
             if avg_nose_width > nose_flare_threshold:
                 if not is_above_threshold:
@@ -108,6 +108,8 @@ while cap.isOpened():
 
     cv2.imshow('Nose Flare Detection', frame)
 
+    if end == True:
+        break
     # Press 'q' to exit
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
