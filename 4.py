@@ -51,6 +51,8 @@ end = False
 blink_count = 0
 set_count = 0
 EAR_THRESHOLD = 0.21
+blink_in_progress = False  # Track if a blink is in progress
+
 n4()  # Initial notification sound
 
 # Start Mediapipe face mesh detection
@@ -80,37 +82,24 @@ with mp_face_mesh.FaceMesh(max_num_faces=1, refine_landmarks=True, min_detection
                 right_EAR = calculate_EAR(right_eye)
                 avg_EAR = (left_EAR + right_EAR) / 2.0
 
-                # Detect blink when EAR is below the threshold
-                if avg_EAR < EAR_THRESHOLD:
-                    time.sleep(2)
+                # Detect blink when EAR is below the threshold and no blink is in progress
+                if avg_EAR < EAR_THRESHOLD and not blink_in_progress:
+                    blink_in_progress = True  # Mark blink as in progress
                     blink_count += 1
-                    cv2.putText(image, "Blink Detected", (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-                else :
-                    cv2.putText(image, f"OK", (20, 150), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
-
-                    # Wait until EAR is back to normal before counting another blink
-                    while avg_EAR < EAR_THRESHOLD:
-                        success, image = cap.read()
-                        image = cv2.flip(image, 1)
-                        rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-                        results = face_mesh.process(rgb_image)
-                        if results.multi_face_landmarks:
-                            face_landmarks = results.multi_face_landmarks[0]
-                            left_eye = [(face_landmarks.landmark[i].x, face_landmarks.landmark[i].y) for i in LEFT_EYE_LANDMARKS]
-                            right_eye = [(face_landmarks.landmark[i].x, face_landmarks.landmark[i].y) for i in RIGHT_EYE_LANDMARKS]
-                            left_EAR = calculate_EAR(left_eye)
-                            right_EAR = calculate_EAR(right_eye)
-                            avg_EAR = (left_EAR + right_EAR) / 2.0
+                elif avg_EAR >= EAR_THRESHOLD and blink_in_progress:
+                    blink_in_progress = False  # Reset blink progress when eyes are open
+                else:
+                    cv2.putText(image, f"OK", (10, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,255,0), 4)
 
                 # Reset blink count after reaching 3 blinks and increase the set count
                 if blink_count >= 3:
                     set_count += 1
                     blink_count = 0
-                    if set_count == 1 and blink_count == 0:
+                    if set_count == 1:
                         set1()  # Play sound for set 1
-                    elif set_count == 2 and blink_count == 0:
+                    elif set_count == 2:
                         set2()  # Play sound for set 2
-                    elif set_count == 3 and blink_count == 0:
+                    elif set_count == 3:
                         set3()  # Play sound for set 3
                         time.sleep(3)  # Pause for 3 seconds
                         end = True  # End the program after set 3
